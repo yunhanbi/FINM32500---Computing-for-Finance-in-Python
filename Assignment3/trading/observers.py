@@ -10,7 +10,7 @@ class VolatilityBreakoutStrategyObserver:
 
     def update(self, price: float) -> None:
         self._prices.append(price)
-        if len(self._prices) < window:
+        if len(self._prices) < self.window:
             pass
         rolling_std = np.std(self._prices[-window:])
         rolling_mean = np.mean(self._prices[-window:])
