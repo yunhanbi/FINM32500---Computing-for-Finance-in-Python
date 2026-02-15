@@ -1,13 +1,13 @@
 import numpy as np
 import pandas as pd
 import pytest
-import os
-import sys
-sys.path.append(os.path.dirname(os.getcwd()))
+# import os
+# import sys
+# sys.path.append(os.path.dirname(os.getcwd()))
 
-from trading.subject import MarketDataSubject
-from trading.observers import VolatilityBreakoutStrategyObserver, LoggerObserver
-from trading.broker import Broker
+from ..trading.subject import MarketDataSubject
+from ..trading.observers import VolatilityBreakoutStrategyObserver, LoggerObserver
+from ..trading.broker import Broker
 
 @pytest.fixture
 def prices():
