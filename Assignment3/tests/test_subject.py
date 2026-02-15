@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 
-from trading.subject import MarketDataSubject
+from ..trading.subject import MarketDataSubject
 from unittest.mock import MagicMock
 
 def test_attach_and_notify_calls_update():

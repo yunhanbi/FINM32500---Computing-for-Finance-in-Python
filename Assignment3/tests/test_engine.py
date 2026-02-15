@@ -3,9 +3,9 @@ import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 
 from unittest.mock import MagicMock
-from trading.engine import Engine
-from trading.subject import MarketDataSubject
-from trading.broker import Broker
+from ..trading.engine import Engine
+from ..trading.subject import MarketDataSubject
+from ..trading.broker import Broker
 
 def test_engine_uses_strategy_signal(prices):
     subject = MarketDataSubject()

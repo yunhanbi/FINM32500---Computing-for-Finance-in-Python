@@ -2,8 +2,8 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 
-from trading.subject import MarketDataSubject
-from trading.observers import VolatilityBreakoutStrategyObserver
+from ..trading.subject import MarketDataSubject
+from ..trading.observers import VolatilityBreakoutStrategyObserver
 from unittest.mock import MagicMock
 
 def test_logger_records_all_prices(subject, logger, prices):

@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 
-from trading.broker import Broker
+from ..trading.broker import Broker
 from unittest.mock import MagicMock
 import pytest
 
