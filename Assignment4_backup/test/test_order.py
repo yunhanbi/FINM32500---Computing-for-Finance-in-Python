@@ -2,8 +2,8 @@ import os
 import sys
 sys.path.append(os.path.dirname(os.getcwd()))
 
-from trading.order import Order, OrderState
-from trading.fix_parser import FixParser
+from ..order import Order, OrderState
+from ..fix_parser import FixParser
 import pytest
 
 fix = FixParser()

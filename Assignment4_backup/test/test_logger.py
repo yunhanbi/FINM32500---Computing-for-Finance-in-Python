@@ -2,7 +2,7 @@ import os
 import sys
 import json
 sys.path.append(os.path.dirname(os.getcwd()))
-from trading.logger import Logger
+from ..logger import Logger
 import pytest
 
 

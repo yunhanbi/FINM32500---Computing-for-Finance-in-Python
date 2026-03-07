@@ -1,6 +1,6 @@
 import os
 import sys
-from trading.fix_parser import FixParser
+from ..fix_parser import FixParser
 import pytest
 sys.path.append(os.path.dirname(os.getcwd()))
 
