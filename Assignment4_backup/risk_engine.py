@@ -8,7 +8,7 @@ class RiskEngine:
     def check(self, order) -> bool:
         position = (1 if order.side == "1" else -1) * order.qty + self.position
         if order.qty > self.max_order_size or position < 0 or position > self.max_position:
-            raise ValueError(rf'{'buy' if order.side == '1' else 'sell'} {order.qty} can not be executed for {order.symbol} with position {self.position}.')
+            raise ValueError(rf'{"buy" if order.side == "1" else "sell"} {order.qty} can not be executed for {order.symbol} with position {self.position}.')
         pass
 
     def update_position(self, order):
