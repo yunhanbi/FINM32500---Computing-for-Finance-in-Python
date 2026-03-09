@@ -1,11 +1,13 @@
 import csv
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
-from datetime import datetime
+import datetime
+import time
 from data_loader import data_loader
 from engine import Engine
 from reporting import report
 import numpy as np
+import alpaca_trade_api as tradeapi
 
 file_path = 'market_data_AAPL.csv'
 capital = 100000
