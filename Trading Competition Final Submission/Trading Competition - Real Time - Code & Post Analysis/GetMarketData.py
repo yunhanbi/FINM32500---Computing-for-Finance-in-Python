@@ -1,7 +1,7 @@
 import alpaca_trade_api as tradeapi
 from alpaca.trading.client import TradingClient
 
-api = tradeapi.REST('PKA2YLOYQMRLU4UXQGWFFENIVE', 'GDn1KmHfKLQJBDWv1YiEecccgnH35qa7TwwiuRAa1HKi', 'https://paper-api.alpaca.markets')
+api = tradeapi.REST('PK6ICUILQVKXFEDM7IYXEEQLRY', '7CB8dzqytZqK7zrJZwDpaH6YCBaRYWFdvE5aFx1Qtf45', 'https://paper-api.alpaca.markets')
 
 symbol = "AAPL"
 timeframe = '1Min'

@@ -4,6 +4,7 @@ from abc import ABC, abstractmethod
 import datetime
 from datetime import datetime, time as dt_time
 import time
+import os
 from data_loader import data_loader
 from engine import Engine
 from reporting import report
@@ -16,8 +17,9 @@ from alpaca_trade_api.rest import TimeFrame
 from alpaca.data.requests import StockLatestBarRequest
 from alpaca.data import StockHistoricalDataClient
 
-api = tradeapi.REST('PKA2YLOYQMRLU4UXQGWFFENIVE', 'GDn1KmHfKLQJBDWv1YiEecccgnH35qa7TwwiuRAa1HKi', 'https://paper-api.alpaca.markets')
-client = StockHistoricalDataClient('PKA2YLOYQMRLU4UXQGWFFENIVE', 'GDn1KmHfKLQJBDWv1YiEecccgnH35qa7TwwiuRAa1HKi')
+api = tradeapi.REST('PK6ICUILQVKXFEDM7IYXEEQLRY', '7CB8dzqytZqK7zrJZwDpaH6YCBaRYWFdvE5aFx1Qtf45', 'https://paper-api.alpaca.markets')
+client = StockHistoricalDataClient('PK6ICUILQVKXFEDM7IYXEEQLRY', '7CB8dzqytZqK7zrJZwDpaH6YCBaRYWFdvE5aFx1Qtf45')
+trading_client = TradingClient("PK6ICUILQVKXFEDM7IYXEEQLRY", "7CB8dzqytZqK7zrJZwDpaH6YCBaRYWFdvE5aFx1Qtf45", paper=True)
 
 timeframe = '1Min'
 start_date = "2026-03-01"
@@ -36,13 +38,21 @@ market_sample = pd.DataFrame({
     'close': [bar_data.close],
     'volume': [bar_data.volume]
 })
+all_symbols = [position.symbol for position in trading_client.get_all_positions()]
 
 def main(symbol):
-    start_time = dt_time(9, 30)
-    end_time = dt_time(16, 0)
-    result = np.empty((0, 4))
+    start_time = dt_time(6, 30)
+    end_time = dt_time(16, 00)
+    result = np.empty((0, 6))
     market_data = pd.DataFrame(columns=market_sample.columns).astype(market_sample.dtypes)
     request_params = StockLatestBarRequest(symbol_or_symbols=symbol, timeframe=TimeFrame.Minute)
+    position = 0
+    avg_price = 0
+    if os.path.isfile(f'final_report_{symbol}.csv'):
+        result = pd.read_csv(f'final_report_{symbol}.csv').to_numpy()
+        avg_price = result[-1,1]
+    if symbol in all_symbols:
+        position = trading_client.get_open_position(symbol).qty
 
     while True:
         now = datetime.now().time()
@@ -57,9 +67,9 @@ def main(symbol):
                                  'close': [latest_bar.close],
                                  'volume': [latest_bar.volume]})
             market_data = pd.concat([market_data, data], axis=0, ignore_index=True)
-            new_result = Engine(risk, stop, market_data[['high', 'low', 'close']], capital, symbol).execute().reshape(1,-1)
-            result = np.append(result, new_result, axis=0)
-            report(market_data[['timestamp', 'close']], result, symbol)
+            new_result = Engine(risk, stop, market_data[['high', 'low', 'close']], capital, symbol, position, avg_price).execute().reshape(1,-1)
+            result = np.append(result, np.hstack((new_result, np.array(data[['timestamp', 'close']]))), axis=0)
+            report(result, symbol)
             print(rf'[LOG] {now} - Running {symbol} trade finished.')
             time.sleep(60)
         else:
@@ -67,12 +77,14 @@ def main(symbol):
             time.sleep(3600)
 
 if __name__ == '__main__':
-    p1 = Process(target=main, args=('AAPL',))
-    p2 = Process(target=main, args=('MSFT',))
-    p3 = Process(target=main, args=('TSLA',))
+    p1 = Process(target=main, args=('INTC',))
+    p2 = Process(target=main, args=('NVDA',))
+    p3 = Process(target=main, args=('AMD',))
 
     p1.start()
+    time.sleep(3)
     p2.start()
+    time.sleep(4)
     p3.start()
 
     p1.join()

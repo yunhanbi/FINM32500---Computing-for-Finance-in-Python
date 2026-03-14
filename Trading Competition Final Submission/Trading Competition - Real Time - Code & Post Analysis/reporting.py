@@ -7,9 +7,7 @@ from engine import Engine
 import numpy as np
 import pandas as pd
 
-def report(market_data, result, symbol):
-    market_price = np.array(market_data)
-    final_report = np.hstack((result[:-1,:], market_price[1:, :]))
-    final_df = pd.DataFrame(final_report, columns = ['PositionQuantity', 'AvgPrice', 'Return', 'Capital', 'TimeStamp', 'MarketPrice'])
+def report(result, symbol):
+    final_df = pd.DataFrame(result, columns = ['PositionQuantity', 'AvgPrice', 'Return', 'Capital', 'TimeStamp', 'MarketPrice'])
     final_df.to_csv(rf'final_report_{symbol}.csv', index=False)
     return final_df
